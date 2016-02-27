@@ -5,7 +5,34 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div id="inputName">
+      请填写昵称:
+      <input id="u" palceholder="用户昵称" maxlength="20">
+      <p><button id="okname">进入聊天室</button></p>
+    </div>
+    <div id="chat">
+      <div id="msgContent">
+        <ul id="messages">
+
+        </ul>
+        <form class="form">
+          <div id="sendContent">
+            <select id="sel_obj">
+              <option value>所有人</option>
+            </select>
+            <input id="m" maxlength="200">
+            <button id="s">发射</button>
+          </div>
+        </form>
+      </div>
+      <div id="users">
+        <div id="online"></div>
+        <ol id="userlist"></ol>
+      </div>
+    </div>
+
+    <script src="/javascripts/jquery-1.11.2.js"></script>
+    <script src="/javascripts/socket.io.js"></script>
+    <script src="/javascripts/chat.js"></script>
   </body>
 </html>

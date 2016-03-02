@@ -57,6 +57,10 @@ var IO = function(server) {
 			data.msg = "欢迎<b>" + data.user + "</b>进入聊天室";
 			sendmsg(data);
 		});
+		socket.on('add friend',function(data){
+			//console.log(data);
+			sendFriendMsg(data);
+		})
 		socket.on('disconnect', function() {
 			console.log('disconnect')
 			if (username) {
@@ -106,5 +110,13 @@ var IO = function(server) {
 		}
 	}
 
+	function sendFriendMsg(data){
+		if (data.friend_name in usocket) {
+			console.log('================')
+			usocket[data.friend_name].emit('fri' + data.friend_name, data);
+			usocket[data.myself_name].emit('fri' + data.myself_name, data);
+			console.log('================')
+		}
+	}
 }
 module.exports = IO;

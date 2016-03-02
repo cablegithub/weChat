@@ -37,7 +37,7 @@ a {
   line-height: 30px;
 }
 .form #m{
-  width: 30%;
+  width: 26%;
   height:30px;
   line-height: 30px;
 }
@@ -148,4 +148,27 @@ ol li:hover{
   height: 30px;
   line-height: 30px;
   border-right: none;
+}
+
+
+/*表情*/
+#emojiWrapper {
+  display: none;
+  width: 500px;
+  bottom: 30px;
+  position: absolute;
+  background-color: #aaa;
+  box-shadow: 0 0 10px #555;
+}
+#emojiWrapper img {
+  margin: 2px;
+  padding: 2px;
+  width: 25px;
+  height: 25px;
+}
+#emojiWrapper img:hover {
+  background-color: blue;
+}
+.emoji{
+  display: inline;
 }

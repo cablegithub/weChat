@@ -21,8 +21,11 @@
               <option value>所有人</option>
             </select>
             <input id="m" maxlength="200">
+            <input id="emoji" type="button" value="emoji" title="emoji" />
             <button id="s">发射</button>
-            <input id="clearBtn" type="button" value="clear" title="清空" />
+            <!--<input id="clearBtn" type="button" value="clear" title="清空" />-->
+          </div>
+          <div id="emojiWrapper">
           </div>
         </form>
       </div>
@@ -34,11 +37,45 @@
 
     <script src="/javascripts/jquery-1.11.2.js"></script>
     <script src="/javascripts/socket.io.js"></script>
+    <script src="/javascripts/keywords.js"></script>
     <script src="/javascripts/chat.js"></script>
+    <!--<script>-->
+      <!--document.getElementById('clearBtn').addEventListener('click', function() {-->
+        <!--document.getElementById('messages').innerHTML = '';-->
+      <!--}, false);-->
+    <!--</script>-->
     <script>
-      document.getElementById('clearBtn').addEventListener('click', function() {
-        document.getElementById('messages').innerHTML = '';
+      this._initialEmoji();
+      document.getElementById('emoji').addEventListener('click', function(e) {
+        var emojiwrapper = document.getElementById('emojiWrapper');
+        emojiwrapper.style.display = 'block';
+        e.stopPropagation();
       }, false);
+      function _initialEmoji() {
+        var emojiContainer = document.getElementById('emojiWrapper'),
+                docFragment = document.createDocumentFragment();
+        for (var i = 69; i > 0; i--) {
+          var emojiItem = document.createElement('img');
+          emojiItem.src = 'images/emoji/' + i + '.gif';
+          emojiItem.title = i;
+          docFragment.appendChild(emojiItem);
+        };
+        emojiContainer.appendChild(docFragment);
+      }
+      document.getElementById('emojiWrapper').addEventListener('click', function(e) {
+        var target = e.target;
+        if (target.nodeName.toLowerCase() == 'img') {
+          var messageInput = document.getElementById('m');
+          messageInput.focus();
+          messageInput.value = messageInput.value + '[emoji:' + target.title + ']';
+        };
+      }, false);
+      document.body.addEventListener('click', function(e) {
+        var emojiwrapper = document.getElementById('emojiWrapper');
+        if (e.target != emojiwrapper) {
+          emojiwrapper.style.display = 'none';
+        };
+      });
     </script>
   </body>
 </html>

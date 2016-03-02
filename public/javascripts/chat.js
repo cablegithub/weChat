@@ -50,6 +50,9 @@ $(function() {
         socket.on('fri'+user,function(data){
             friendMsg(data);
         })
+        socket.on('reply'+user,function(data){
+            replyMsg(data);
+        })
     });
     $('#users').on('click', 'li', function() {
         var v = $(this).html();
@@ -112,6 +115,21 @@ $(function() {
                 myself_name: user
             });
             $('.nani').remove();
+        }else if(target.classList.contains('agree')){
+            var fri_name = target.dataset.username;
+            //console.log(fri_name);
+            socket.emit('friend reply',{
+                fri_name:fri_name,
+                user:user,
+                status:1
+            })
+        }else if(target.classList.contains('refuse')){
+            var fri_name = target.dataset.username;
+            socket.emit('friend reply',{
+                fri_name:fri_name,
+                user:user,
+                status:0
+            })
         }else {
             $('.nani').remove();
         }
@@ -169,9 +187,29 @@ $(function() {
             var m  = document.querySelector('#messages');
             m.scrollTop = m.scrollHeight;
         } else {
-            $('#messages').append($('<li class="notice">系统通知：' + data.myself_name+"请求添加你为好友<a>同意</a>或者<a>拒绝</a>"+ '</li>'));
+            $('#messages').append($('<li class="notice">系统通知：' + data.myself_name+'请求添加你为好友<a class="agree" data-username="'+data.myself_name+'">同意</a>或者<a class="refuse" data-username="'+data.myself_name+'">拒绝</a>'+ '</li>'));
             var m  = document.querySelector('#messages');
             m.scrollTop = m.scrollHeight;
+        }
+    }
+
+    function replyMsg(data){
+        if(data.status==1) {
+            if (data.user === user) {
+                $('#messages').append($('<li class="notice">系统通知:你们已经是好友了! </li>'));
+                var m = document.querySelector('#messages');
+                m.scrollTop = m.scrollHeight;
+            } else {
+                $('#messages').append($('<li class="notice">系统通知：' + data.user + '同意了你的好友请求</li>'));
+                var m = document.querySelector('#messages');
+                m.scrollTop = m.scrollHeight;
+            }
+        }else if(data.status==0){
+            if (data.user === user) {
+                $('#messages').append($('<li class="notice">系统通知:已拒绝! </li>'));
+                var m = document.querySelector('#messages');
+                m.scrollTop = m.scrollHeight;
+            }
         }
     }
     function showEmoji(msg){

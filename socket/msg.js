@@ -61,6 +61,10 @@ var IO = function(server) {
 			//console.log(data);
 			sendFriendMsg(data);
 		})
+
+		socket.on('friend reply',function(data){
+			sendFriendReply(data);
+		})
 		socket.on('disconnect', function() {
 			console.log('disconnect')
 			if (username) {
@@ -102,20 +106,22 @@ var IO = function(server) {
 
 	function sendUserMsg(data) {
 		if (data.to in usocket) {
-			console.log('================')
 			console.log('to' + data.to, data);
 			usocket[data.to].emit('to' + data.to, data);
 			usocket[data.user].emit('to' + data.user, data);
-			console.log('================')
 		}
 	}
 
 	function sendFriendMsg(data){
 		if (data.friend_name in usocket) {
-			console.log('================')
 			usocket[data.friend_name].emit('fri' + data.friend_name, data);
 			usocket[data.myself_name].emit('fri' + data.myself_name, data);
-			console.log('================')
+		}
+	}
+	function sendFriendReply(data){
+		if(data.fri_name in usocket){
+			usocket[data.fri_name].emit('reply' + data.fri_name, data);
+			usocket[data.user].emit('reply' + data.user, data);
 		}
 	}
 }
